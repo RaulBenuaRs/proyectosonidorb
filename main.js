@@ -1,62 +1,41 @@
-let mic
+let mic;
+let micStarted = false;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight)
+  createCanvas(windowWidth, windowHeight);
+  colorMode(RGB);
+  background(255);
 
-  // se inicializa el micrófono
-  mic = new p5.AudioIn()
-  mic.start()
-  colorMode(RGB)
-
+  // Activar el micrófono automáticamente si el navegador lo permite
+  userStartAudio().then(() => {
+    mic = new p5.AudioIn();
+    mic.start(() => {
+      micStarted = true;
+    });
+  });
 }
 
 function draw() {
- 
-  
+  if (!micStarted) return;
 
-  // se obtiene el volumen del audio obtenido por el micro
-  let volume = mic.getLevel()
+  background(255, 10); // fondo blanco con trail
 
-  let fond = map (volume,0,1,0,255)
-  // se mapea el volumen a la cantidad de círculos
-  let count = map(volume, 0, 1, 0, 500)
+  let volume = mic.getLevel();
 
-  let cant = map(volume,0,1,1,200)
-  // se mapea el volumen al tamaño de los círculos
-  let size = map(volume, 0, 1, 0, height / 2)
+  let count = map(volume, 0, 1, 0, 500);
+  let cant = map(volume, 0, 1, 1, 200);
+  let size = map(volume, 0, 1, 0, height / 2);
+  let strokew = map(volume, 0, 1, 1, 5);
+  let colorr = map(volume, 0, 1, 20, 100);
+  let colorg = map(volume, 0, 1, 40, 150);
+  let colorb = map(volume, 0, 1, 15, 60);
 
-  let sizem = map(volume, 0 ,1 ,800 , 1200)
+  fill('#dab6e9');
+  strokeWeight(strokew);
+  stroke('#e44385');
 
-  let inven = map(volume,0,1.5,0,100)
-
-  let strokew = map (volume, 0 , 1 , 1 ,5)
-  let colorr = map (volume, 0 , 1 , 20 , 100)
-  let colorg = map (volume, 0 , 1 , 40 , 150)
-  let colorb = map (volume, 0 , 1 , 15 , 60)
-
-  console.log(volume)
-
-  let c = color(colorr, colorg, colorb)
-
-
- // noStroke();
-//fill(colorr,colorg,colorb);
-//for (let i = 0; i < 100; i++) {
-//for (let j = 0; j < 100; j++) {
- //stroke(i, j, 0);
- //  point(1920, 1080);
- // }
-//}
-
- // fill(colorr,colorg,colorb)
-
- fill('#dab6e9');
- strokeWeight(strokew)
- stroke('#e44385')
-  
   for (let i = 0; i < count; i++) {
-   // fill('blue')
-    circle(random(width), random(height), size)
+    circle(random(width), random(height), size);
   }
 
   push();
@@ -65,23 +44,17 @@ function draw() {
   star(0, 0, 80, 1000, 40);
   pop();
 
-  //el segundo que es tamaño
-  
   push();
   translate(width * 0.5, height * 0.5);
   rotate(frameCount / 50.0);
   star(0, 0, 80, size, cant);
   pop();
-// relleno para gradient
 
   push();
   translate(width * 0.5, height * 0.5);
   rotate(frameCount / 50.0);
   star(0, 0, 80, cant, 40);
   pop();
-
-
- 
 }
 
 function star(x, y, radius1, radius2, npoints) {
@@ -99,9 +72,6 @@ function star(x, y, radius1, radius2, npoints) {
   endShape(CLOSE);
 }
 
-
-
-// acomoda el canvas cuando se redimensiona la ventana
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight)
+  resizeCanvas(windowWidth, windowHeight);
 }
