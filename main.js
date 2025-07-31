@@ -46,14 +46,10 @@ function draw() {
     circle(random(width), random(height), size);
   }
 
-  // AJUSTADO: usar proporciones de la pantalla
-  let r1 = min(width, height) * 0.1;
-  let r2 = max(width, height) * 1.5;
-
   push();
   translate(width * 0.5, height * 0.5);
   rotate(frameCount / 50.0);
-  star(0, 0, r1, r2, 40); // <-- aquí el cambio
+  star(0, 0, 80, max(width, height) * 2, 40); // 🔺 Escalado dinámico aquí
   pop();
 
   push();
