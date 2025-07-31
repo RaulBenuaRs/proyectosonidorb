@@ -12,18 +12,14 @@ function setup() {
 
 function draw() {
   if (!micStarted) {
+    // Círculo inicial como estaba
     background(255);
-
-    // Degradado radial tipo "halo" usando círculos concéntricos
+    stroke('#e44385');
+    strokeWeight(2);
+    fill('#dab6e9');
+    ellipse(width / 2, height / 2, 80);
     noStroke();
-    for (let r = max(width, height) * 1.5; r > 0; r -= 10) {
-      let alpha = map(r, max(width, height) * 1.5, 0, 0, 100);
-      fill(228, 67, 133, alpha); // rosa con transparencia
-      ellipse(width / 2, height / 2, r);
-    }
-
-    // Texto
-    fill(255); // blanco para buen contraste
+    fill('#e44385');
     text('click', width / 2, height / 2);
     return;
   }
@@ -50,27 +46,36 @@ function draw() {
 
   push();
   translate(width * 0.5, height * 0.5);
-  rotate(frameCount / 50.0);
-  star(0, 0, 80, 1000, 40);
+  rotate(frameCount / 100.0);
+  noFill();
+  stroke(228, 67, 133, 50); // rosa con transparencia
+  strokeWeight(2);
+  star(0, 0, height * 0.2, max(width, height) * 1.2, 100); // grande y abierto
   pop();
 
   push();
   translate(width * 0.5, height * 0.5);
-  rotate(frameCount / 50.0);
-  star(0, 0, 80, size, cant);
+  rotate(frameCount / 60.0);
+  noFill();
+  stroke(218, 182, 233, 30); // violeta claro con transparencia
+  strokeWeight(1);
+  star(0, 0, height * 0.15, size * 2, cant);
   pop();
 
   push();
   translate(width * 0.5, height * 0.5);
-  rotate(frameCount / 50.0);
-  star(0, 0, 80, cant, 40);
+  rotate(-frameCount / 80.0);
+  noFill();
+  stroke(228, 67, 133, 30); // rosa claro
+  strokeWeight(1);
+  star(0, 0, height * 0.1, cant * 1.5, 60);
   pop();
 }
 
 function mousePressed() {
   if (!micStarted) {
     let d = dist(mouseX, mouseY, width / 2, height / 2);
-    if (d < 100) { // área más amplia del centro para mayor usabilidad
+    if (d < 40) {
       userStartAudio().then(() => {
         mic = new p5.AudioIn();
         mic.start();
