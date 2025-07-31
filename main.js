@@ -12,16 +12,18 @@ function setup() {
 
 function draw() {
   if (!micStarted) {
-    // Dibuja el círculo con relleno y borde como los del sketch
     background(255);
-    stroke('#e44385');      // borde igual que en el sketch
-    strokeWeight(2);
-    fill('#dab6e9');        // relleno igual que en el sketch
-    ellipse(width / 2, height / 2, 80);
 
-    // Texto en tipografía mono y color del borde
+    // Degradado radial tipo "halo" usando círculos concéntricos
     noStroke();
-    fill('#e44385');
+    for (let r = max(width, height) * 1.5; r > 0; r -= 10) {
+      let alpha = map(r, max(width, height) * 1.5, 0, 0, 100);
+      fill(228, 67, 133, alpha); // rosa con transparencia
+      ellipse(width / 2, height / 2, r);
+    }
+
+    // Texto
+    fill(255); // blanco para buen contraste
     text('click', width / 2, height / 2);
     return;
   }
@@ -68,7 +70,7 @@ function draw() {
 function mousePressed() {
   if (!micStarted) {
     let d = dist(mouseX, mouseY, width / 2, height / 2);
-    if (d < 40) { // radio del círculo es 80, entonces 40
+    if (d < 100) { // área más amplia del centro para mayor usabilidad
       userStartAudio().then(() => {
         mic = new p5.AudioIn();
         mic.start();
