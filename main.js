@@ -5,20 +5,28 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(RGB);
   background(255);
-
-  // Activar el micrófono automáticamente si el navegador lo permite
-  userStartAudio().then(() => {
-    mic = new p5.AudioIn();
-    mic.start(() => {
-      micStarted = true;
-    });
-  });
+  textAlign(CENTER, CENTER);
+  textSize(16);
+  textFont('monospace'); // fuente mono
 }
 
 function draw() {
-  if (!micStarted) return;
+  if (!micStarted) {
+    // Dibuja el círculo con relleno y borde como los del sketch
+    background(255);
+    stroke('#e44385');      // borde igual que en el sketch
+    strokeWeight(2);
+    fill('#dab6e9');        // relleno igual que en el sketch
+    ellipse(width / 2, height / 2, 80);
 
-  background(255, 10); // fondo blanco con trail
+    // Texto en tipografía mono y color del borde
+    noStroke();
+    fill('#e44385');
+    text('click', width / 2, height / 2);
+    return;
+  }
+
+  background(255, 10); // fondo blanco con efecto trail
 
   let volume = mic.getLevel();
 
@@ -55,6 +63,19 @@ function draw() {
   rotate(frameCount / 50.0);
   star(0, 0, 80, cant, 40);
   pop();
+}
+
+function mousePressed() {
+  if (!micStarted) {
+    let d = dist(mouseX, mouseY, width / 2, height / 2);
+    if (d < 40) { // radio del círculo es 80, entonces 40
+      userStartAudio().then(() => {
+        mic = new p5.AudioIn();
+        mic.start();
+        micStarted = true;
+      });
+    }
+  }
 }
 
 function star(x, y, radius1, radius2, npoints) {
