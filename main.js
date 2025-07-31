@@ -12,12 +12,14 @@ function setup() {
 
 function draw() {
   if (!micStarted) {
-    // Círculo inicial como estaba
+    // Dibuja el círculo con relleno y borde como los del sketch
     background(255);
-    stroke('#e44385');
+    stroke('#e44385');      // borde igual que en el sketch
     strokeWeight(2);
-    fill('#dab6e9');
+    fill('#dab6e9');        // relleno igual que en el sketch
     ellipse(width / 2, height / 2, 80);
+
+    // Texto en tipografía mono y color del borde
     noStroke();
     fill('#e44385');
     text('click', width / 2, height / 2);
@@ -44,38 +46,33 @@ function draw() {
     circle(random(width), random(height), size);
   }
 
+  // AJUSTADO: usar proporciones de la pantalla
+  let r1 = min(width, height) * 0.1;
+  let r2 = max(width, height) * 1.5;
+
   push();
   translate(width * 0.5, height * 0.5);
-  rotate(frameCount / 100.0);
-  noFill();
-  stroke(228, 67, 133, 50); // rosa con transparencia
-  strokeWeight(2);
-  star(0, 0, height * 0.2, max(width, height) * 1.2, 100); // grande y abierto
+  rotate(frameCount / 50.0);
+  star(0, 0, r1, r2, 40); // <-- aquí el cambio
   pop();
 
   push();
   translate(width * 0.5, height * 0.5);
-  rotate(frameCount / 60.0);
-  noFill();
-  stroke(218, 182, 233, 30); // violeta claro con transparencia
-  strokeWeight(1);
-  star(0, 0, height * 0.15, size * 2, cant);
+  rotate(frameCount / 50.0);
+  star(0, 0, 80, size, cant);
   pop();
 
   push();
   translate(width * 0.5, height * 0.5);
-  rotate(-frameCount / 80.0);
-  noFill();
-  stroke(228, 67, 133, 30); // rosa claro
-  strokeWeight(1);
-  star(0, 0, height * 0.1, cant * 1.5, 60);
+  rotate(frameCount / 50.0);
+  star(0, 0, 80, cant, 40);
   pop();
 }
 
 function mousePressed() {
   if (!micStarted) {
     let d = dist(mouseX, mouseY, width / 2, height / 2);
-    if (d < 40) {
+    if (d < 40) { // radio del círculo es 80, entonces 40
       userStartAudio().then(() => {
         mic = new p5.AudioIn();
         mic.start();
