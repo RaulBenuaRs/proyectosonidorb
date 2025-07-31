@@ -30,7 +30,7 @@ function draw() {
   let inven = map(volume,0,1.5,0,100)
 
   let strokew = map (volume, 0 , 1 , 1 ,5)
-  let colorr = map (volume, 0 , 0 , 20 , 100)
+  let colorr = map (volume, 0 , 1 , 20 , 100)
   let colorg = map (volume, 0 , 1 , 40 , 150)
   let colorb = map (volume, 0 , 1 , 15 , 60)
 
